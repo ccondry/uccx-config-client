@@ -1,0 +1,23 @@
+{
+  "name": "uccx-config-client",
+  "version": "0.1.0",
+  "description": "JavaScript client for UCCX System Configuration APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juxe/uccx-config-client.git"
+  },
+  "keywords": [
+    "cisco",
+    "uccx"
+  ],
+  "author": "Coty Condry <ccondry@cisco.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juxe/uccx-config-client/issues"
+  },
+  "homepage": "https://github.com/juxe/uccx-config-client#readme"
+}
