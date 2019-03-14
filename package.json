@@ -2,9 +2,10 @@
   "name": "uccx-config-client",
   "version": "0.1.0",
   "description": "JavaScript client for UCCX System Configuration APIs",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "node test/test"
+    "start": "NODE_EXTRA_CA_CERTS=/temp/dcloud-root-ca.crt node src/index",
+    "test": "NODE_EXTRA_CA_CERTS=/temp/dcloud-root-ca.crt mocha test --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/juxe/uccx-config-client/issues"
   },
-  "homepage": "https://github.com/juxe/uccx-config-client#readme"
+  "homepage": "https://github.com/juxe/uccx-config-client#readme",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  }
 }
