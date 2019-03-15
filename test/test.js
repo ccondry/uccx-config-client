@@ -13,7 +13,7 @@ const cache = {}
 
 describe('uccx.listResource()', function () {
   it('should get list of resources (agents)', function (done) {
-    uccx.listResource({})
+    uccx.resource.list()
     .then(response => {
       console.log('found', response.length, 'items')
       done()
@@ -26,7 +26,7 @@ describe('uccx.listResource()', function () {
 
 describe('uccx.listResource({csqId, withCsqs, lastReSkillDetails})', function () {
   it('should get list of resources (agents) by csqId = 1, with CSQ map, and with last reskill info', function (done) {
-    uccx.listResource({csqId: 1, withCsqs: true, lastReSkillDetails: true})
+    uccx.resource.list({csqId: 1, withCsqs: true, lastReSkillDetails: true})
     .then(response => {
       console.log('found', response.length, 'items')
       done()
@@ -37,9 +37,9 @@ describe('uccx.listResource({csqId, withCsqs, lastReSkillDetails})', function ()
   })
 })
 
-describe('uccx.getResource(id)', function () {
+describe('uccx.resource.get(id)', function () {
   it('should get single resource by ID', function (done) {
-    uccx.getResource(resourceId)
+    uccx.resource.get(resourceId)
     .then(response => {
       console.log('found', response.alias)
       // store resource in cache for update resource test
@@ -54,7 +54,7 @@ describe('uccx.getResource(id)', function () {
 
 describe('uccx.modifyResource(id, data)', function () {
   it('should modify a single resource by ID', function (done) {
-    uccx.modifyResource(resourceId, cache.resource)
+    uccx.resource.modify(resourceId, cache.resource)
     .then(response => {
       // response will be undefined
       console.log('modified', cache.resource.alias)
