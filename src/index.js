@@ -25,7 +25,7 @@ class Uccx {
   /**
    * Retrieves resource (agent or supervisor) details from UCCX
    * @param {String} id - the resource ID (same as username)
-   * @return {Promise} the request promise
+   * @return {Promise} the request promise, which resolves to the resource object
    */
   getResource (id) {
     const options = this.baseOptions()
@@ -66,6 +66,24 @@ class Uccx {
     } else {
       return [response]
     }
+  }
+
+  /**
+   * Modifies a resource (agent or supervisor)
+   * @param {String} id - the resource ID (same as username)
+   * @param {Object} data - the resource data to replace existing data in UCCX
+   * @return {Promise} the request promise, which resolves to undefined when
+   * successful
+   */
+  modifyResource (id, data) {
+    const options = this.baseOptions()
+    options.url = '/resource/' + id
+    options.method = 'PUT'
+    // sending JSON data
+    options.headers['Content-Type'] = 'application/json'
+    // attach data to request body
+    options.body = data
+    return request(options)
   }
 }
 
