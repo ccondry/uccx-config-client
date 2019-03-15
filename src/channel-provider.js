@@ -1,9 +1,9 @@
 const request = require('request-promise-native')
 
-module.exports = class Skill {
+module.exports = class ChannelProvider {
   constructor (parent) {
     this.parent = parent
-    this.path = '/skill'
+    this.path = '/channelProvider'
   }
 
   /**
@@ -14,9 +14,9 @@ module.exports = class Skill {
   }
 
   /**
-   * Retrieves skill details from UCCX
-   * @param {Integer} id - the skill ID
-   * @return {Promise} the request promise, which resolves to the skill object
+   * Retrieves channel provider details from UCCX
+   * @param {Integer} id - the channel provider ID
+   * @return {Promise} the request promise, which resolves to the channel provider object
    */
   get (id) {
     const options = this.baseOptions()
@@ -25,9 +25,9 @@ module.exports = class Skill {
   }
 
   /**
-   * Lists skills configured in UCCX
+   * Lists channel providers configured in UCCX
    * @param {Object} params - input parameter object
-   * @return {Array} an array of skills
+   * @return {Array} an array of channel providers
    */
   async list (params) {
     params = params || {}
@@ -37,17 +37,17 @@ module.exports = class Skill {
 
     const response = await request(options)
     // make sure return data is an array
-    if (Array.isArray(response.skill)) {
-      return response.skill
+    if (Array.isArray(response.channelProvider)) {
+      return response.channelProvider
     } else {
       return [response]
     }
   }
 
   /**
-   * Modifies a skill
-   * @param {Integer} id - the skill ID
-   * @param {Object} data - the skill data to replace existing data in UCCX
+   * Modifies a channel provider
+   * @param {Integer} id - the channel provider ID
+   * @param {Object} data - the channel provider data to replace existing data in UCCX
    * @return {Promise} the request promise, which resolves to undefined when
    * successful
    */
@@ -63,25 +63,25 @@ module.exports = class Skill {
   }
 
   /**
-   * Creates a skill
-   * @param {String} skillName - the name you want for the new skill
+   * Creates a channel provider
+   * @param {Object} data - the data for the new channel provider
    * @return {Promise} the request promise, which resolves to undefined when
    * successful
    */
-  create (skillName) {
+  create (data) {
     const options = this.baseOptions()
     options.url = this.path
     options.method = 'POST'
     // sending JSON data
     options.headers['Content-Type'] = 'application/json'
     // attach data to request body
-    options.body = {skillName}
+    options.body = data
     return request(options)
   }
 
   /**
-   * Deletes a skill
-   * @param {Integer} id - the skill ID
+   * Deletes a channel provider
+   * @param {Integer} id - the channel provider ID
    * @return {Promise} the request promise, which resolves to undefined when
    * successful
    */

@@ -1,9 +1,9 @@
 const request = require('request-promise-native')
 
-module.exports = class Skill {
+module.exports = class CSQ {
   constructor (parent) {
     this.parent = parent
-    this.path = '/skill'
+    this.path = '/csq'
   }
 
   /**
@@ -14,9 +14,9 @@ module.exports = class Skill {
   }
 
   /**
-   * Retrieves skill details from UCCX
-   * @param {Integer} id - the skill ID
-   * @return {Promise} the request promise, which resolves to the skill object
+   * Retrieves CSQ details from UCCX
+   * @param {Integer} id - the CSQ ID
+   * @return {Promise} the request promise, which resolves to the CSQ object
    */
   get (id) {
     const options = this.baseOptions()
@@ -25,9 +25,9 @@ module.exports = class Skill {
   }
 
   /**
-   * Lists skills configured in UCCX
+   * Lists CSQs configured in UCCX
    * @param {Object} params - input parameter object
-   * @return {Array} an array of skills
+   * @return {Array} an array of CSQs
    */
   async list (params) {
     params = params || {}
@@ -37,17 +37,17 @@ module.exports = class Skill {
 
     const response = await request(options)
     // make sure return data is an array
-    if (Array.isArray(response.skill)) {
-      return response.skill
+    if (Array.isArray(response.csq)) {
+      return response.csq
     } else {
       return [response]
     }
   }
 
   /**
-   * Modifies a skill
-   * @param {Integer} id - the skill ID
-   * @param {Object} data - the skill data to replace existing data in UCCX
+   * Modifies a CSQ
+   * @param {Integer} id - the CSQ ID
+   * @param {Object} data - the CSQ data to replace existing data in UCCX
    * @return {Promise} the request promise, which resolves to undefined when
    * successful
    */
@@ -63,25 +63,25 @@ module.exports = class Skill {
   }
 
   /**
-   * Creates a skill
-   * @param {String} skillName - the name you want for the new skill
+   * Creates a CSQ
+   * @param {Object} data - CSQ data
    * @return {Promise} the request promise, which resolves to undefined when
    * successful
    */
-  create (skillName) {
+  create (data) {
     const options = this.baseOptions()
     options.url = this.path
     options.method = 'POST'
     // sending JSON data
     options.headers['Content-Type'] = 'application/json'
     // attach data to request body
-    options.body = {skillName}
+    options.body = data
     return request(options)
   }
 
   /**
-   * Deletes a skill
-   * @param {Integer} id - the skill ID
+   * Deletes a CSQ
+   * @param {Integer} id - the CSQ ID
    * @return {Promise} the request promise, which resolves to undefined when
    * successful
    */

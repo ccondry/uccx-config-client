@@ -9,8 +9,12 @@ const uccx = new client({
 // config values for tests
 const resourceId = 'sjeffers'
 // cache for operations to carry data through the tests
-const cache = {}
+const cache = {
+  channelProviderId: 1
+}
 
+
+// Resources
 describe('uccx.resource.list()', function () {
   it('should get list of resources (agents)', function (done) {
     uccx.resource.list()
@@ -66,6 +70,8 @@ describe('uccx.resource.modify(id, data)', function () {
   })
 })
 
+
+// Skills
 describe('uccx.skill.create(name)', function () {
   it('should create skill', function (done) {
     uccx.skill.create('test1234test')
@@ -119,3 +125,99 @@ describe('uccx.skill.delete(id)', function () {
     })
   })
 })
+
+
+// Contact Service Queues
+// describe('uccx.csq.create(name)', function () {
+//   it('should create skill', function (done) {
+//     uccx.skill.create('test1234test')
+//     .then(refURL => {
+//       console.log('created skill:', refURL)
+//       // extract skill ID
+//       cache.skillId = refURL.split('/').pop()
+//       done()
+//     })
+//     .catch(e => {
+//       done(e)
+//     })
+//   })
+// })
+
+describe('uccx.csq.list()', function () {
+  it('should list csqs', function (done) {
+    uccx.csq.list()
+    .then(response => {
+      console.log('found', response, 'csqs')
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+// describe('uccx.csq.get(id)', function () {
+//   it('should get csq', function (done) {
+//     uccx.csq.get(cache.csqId)
+//     .then(response => {
+//       console.log('found', response.csqName)
+//       done()
+//     })
+//     .catch(e => {
+//       done(e)
+//     })
+//   })
+// })
+//
+// describe('uccx.csq.delete(id)', function () {
+//   it('should delete csq', function (done) {
+//     uccx.csq.delete(cache.csqId)
+//     .then(response => {
+//       console.log('deleted', response)
+//       done()
+//     })
+//     .catch(e => {
+//       done(e)
+//     })
+//   })
+// })
+
+// Channel Providers
+describe('uccx.channelProvider.list()', function () {
+  it('should list Channel Provider', function (done) {
+    uccx.channelProvider.list()
+    .then(response => {
+      console.log('found', response.length, 'Channel Providers')
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+describe('uccx.channelProvider.get(id)', function () {
+  it('should get Channel Provider', function (done) {
+    uccx.channelProvider.get(cache.channelProviderId)
+    .then(response => {
+      console.log('found', response.self)
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+//
+// describe('uccx.channelProvider.delete(id)', function () {
+//   it('should delete Channel Provider', function (done) {
+//     uccx.channelProvider.delete(cache.channelProviderId)
+//     .then(response => {
+//       console.log('deleted', response)
+//       done()
+//     })
+//     .catch(e => {
+//       done(e)
+//     })
+//   })
+// })

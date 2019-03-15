@@ -5,7 +5,10 @@ module.exports = class Resource {
     this.parent = parent
     this.path = '/resource'
   }
-
+  
+  /**
+   * default options for REST request
+   */
   baseOptions () {
     return this.parent.baseOptions()
   }

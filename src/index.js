@@ -1,5 +1,7 @@
 const Resource = require('./resource')
 const Skill = require('./skill')
+const Csq = require('./csq')
+const ChannelProvider = require('./channel-provider')
 
 class Uccx {
   constructor({url, username, password}) {
@@ -7,10 +9,14 @@ class Uccx {
     this.username = username
     this.password = password
 
-    // resources (agents and supervisors)
+    // Resources (agents and supervisors)
     this.resource = new Resource(this)
-    // skills
+    // Skills
     this.skill = new Skill(this)
+    // Contact Service Queues
+    this.csq = new Csq(this)
+    // Channel Provider (email server)
+    this.channelProvider = new ChannelProvider(this)
   }
 
   // REST request options

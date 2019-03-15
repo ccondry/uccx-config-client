@@ -4,6 +4,7 @@
   "description": "JavaScript client for UCCX System Configuration APIs",
   "main": "src/index.js",
   "scripts": {
+    "provision": "NODE_EXTRA_CA_CERTS=/temp/dcloud-root-ca.crt node test/provision",
     "start": "NODE_EXTRA_CA_CERTS=/temp/dcloud-root-ca.crt node src/index",
     "test": "NODE_EXTRA_CA_CERTS=/temp/dcloud-root-ca.crt mocha test --timeout 10000"
   },
