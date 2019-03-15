@@ -1,4 +1,5 @@
 const Resource = require('./resource')
+const Skill = require('./skill')
 
 class Uccx {
   constructor({url, username, password}) {
@@ -8,6 +9,8 @@ class Uccx {
 
     // resources (agents and supervisors)
     this.resource = new Resource(this)
+    // skills
+    this.skill = new Skill(this)
   }
 
   // REST request options
