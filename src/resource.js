@@ -3,6 +3,7 @@ const request = require('request-promise-native')
 module.exports = class Resource {
   constructor (parent) {
     this.parent = parent
+    this.path = '/resource'
   }
 
   baseOptions () {
@@ -16,7 +17,7 @@ module.exports = class Resource {
    */
   get (id) {
     const options = this.baseOptions()
-    options.url = '/resource/' + id
+    options.url = this.path + '/' + id
     return request(options)
   }
 
@@ -34,7 +35,7 @@ module.exports = class Resource {
     params = params || {}
 
     const options = this.baseOptions()
-    options.url = '/resource'
+    options.url = this.path
 
     options.qs = {}
     if (params.csqId) {
@@ -64,7 +65,7 @@ module.exports = class Resource {
    */
   modify (id, data) {
     const options = this.baseOptions()
-    options.url = '/resource/' + id
+    options.url = this.path + '/' + id
     options.method = 'PUT'
     // sending JSON data
     options.headers['Content-Type'] = 'application/json'
