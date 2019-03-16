@@ -10,7 +10,7 @@ const uccx = new client({
 const resourceId = 'sjeffers'
 // cache for operations to carry data through the tests
 const cache = {
-  channelProviderId: 1
+  // channelProviderId: 1
 }
 
 
@@ -185,6 +185,37 @@ describe('uccx.csq.get(id)', function () {
 })
 
 // Channel Providers
+// NOTE: only 1 channel provider can be configured, so this will fail if you
+// have already configured an email server
+// describe('uccx.channelProvider.create()', function () {
+//   it('should create Channel Provider', function (done) {
+//     uccx.channelProvider.create({
+//       type: 'email',
+//       mailserverType: 'microsoft',
+//       proxyType: 'none',
+//       send: {
+//         fqdn: 'mail1.dcloud.cisco.com',
+//         port: 587,
+//         protocol: 'SMTP'
+//       },
+//       receive: {
+//         fqdn: 'mail1.dcloud.cisco.com',
+//         port: 993,
+//         protocol: 'IMAP'
+//       },
+//       description: 'my email server'
+//     })
+//     .then(response => {
+//       console.log('created Channel Provider', response)
+//       cache.channelProviderId = response.split('/').pop()
+//       done()
+//     })
+//     .catch(e => {
+//       done(e)
+//     })
+//   })
+// })
+
 describe('uccx.channelProvider.list()', function () {
   it('should list Channel Provider', function (done) {
     uccx.channelProvider.list()
@@ -200,9 +231,10 @@ describe('uccx.channelProvider.list()', function () {
 
 describe('uccx.channelProvider.get(id)', function () {
   it('should get Channel Provider', function (done) {
-    uccx.channelProvider.get(cache.channelProviderId)
+    // there can be only 1
+    uccx.channelProvider.get(1)
     .then(response => {
-      console.log('found', response.self)
+      console.log('found', JSON.stringify(response, null, 2))
       done()
     })
     .catch(e => {
@@ -244,6 +276,7 @@ describe('uccx.skill.delete(id)', function () {
 })
 
 // delete Channel Provider
+// you probably don't want to do this, so I commented it out
 // describe('uccx.channelProvider.delete(id)', function () {
 //   it('should delete Channel Provider', function (done) {
 //     uccx.channelProvider.delete(cache.channelProviderId)
