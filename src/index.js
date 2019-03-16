@@ -3,6 +3,7 @@
 // const Csq = require('./csq')
 // const ChannelProvider = require('./channel-provider')
 const Crud = require('./crud')
+const Role = require('./role')
 
 class Uccx {
   constructor({url, username, password}) {
@@ -24,6 +25,8 @@ class Uccx {
     this.chatWidget = new Crud(this, 'chatWidget')
     // Supervisor Resource Capabilities
     this.capabilities = new Crud(this, 'resource', 'capabilities')
+    // edit roles of Resource (enable supervisor, reporting, administrator)
+    this.role = new Role(this)
   }
 
   // REST request options

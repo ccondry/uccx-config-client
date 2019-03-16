@@ -428,16 +428,19 @@ describe('uccx.chatWidget.get(id)', function () {
   })
 })
 
-
-/***********
-Capabilities
-***********/
-describe('uccx.capabilities.get(id)', function () {
-  it('should get advanced supervisor capabilities for resource by ID', function (done) {
-    uccx.capabilities.get('rbarrows')
+/********************
+Roles (enable supervisor/reporting/admin)
+********************/
+describe('uccx.role.modify({username, extension, roles})', function () {
+  it('should set role for resource', function (done) {
+    uccx.role.modify({
+      username: 'sjeffers0020',
+      extension: '10800020',
+      roles: 'Agent,Supervisor'
+    })
     .then(response => {
       // console.log('found', response.length, 'Chat Widgets')
-      console.log('found capabilities', JSON.stringify(response, null, 2))
+      // console.log('found capabilities', JSON.stringify(response, null, 2))
       done()
     })
     .catch(e => {
@@ -446,6 +449,46 @@ describe('uccx.capabilities.get(id)', function () {
   })
 })
 
+/***********
+Capabilities
+***********/
+describe('uccx.capabilities.get(id)', function () {
+  it('should get advanced supervisor capabilities for resource by ID', function (done) {
+    uccx.capabilities.get('rbarrows0020')
+    .then(response => {
+      console.log('found capabilities for', 'rbarrows0020')
+      // console.log('found capabilities', JSON.stringify(response, null, 2))
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+describe('uccx.capabilities.modify(id, body)', function () {
+  it('should set advanced supervisor capabilities for resource by ID', function (done) {
+    uccx.capabilities.modify('rbarrows0021', {
+      resource: {
+        // '@name': 'Rick 0020 Barrows',
+        refURL: 'https://uccx1.dcloud.cisco.com/adminapi/resource/rbarrows0021'
+      },
+      capabilityList: {
+        capability: [
+          // 'CALENDAR_MGMT'
+        ]
+      }
+    })
+    .then(response => {
+      // console.log('found', response.length, 'Chat Widgets')
+      console.log('successfully modified capabilities for', 'rbarrows0020')
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
 
 /*******
 Clean Up
