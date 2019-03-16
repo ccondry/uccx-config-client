@@ -81,7 +81,7 @@ async function go () {
         })
       }
     })
-    console.log('voice info:', voiceInfo)
+    // console.log('voice info:', voiceInfo)
   } catch (e) {
     console.error('failed to get voice info:', e.message)
   }
