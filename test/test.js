@@ -11,10 +11,13 @@ const resourceId = 'sjeffers'
 // cache for operations to carry data through the tests
 const cache = {
   // channelProviderId: 1
+  chatCsqName: 'Chat',
+  chatCsqRefUrl: 'https://uccx1.dcloud.cisco.com/adminapi/csq/3'
 }
 
-
-// Resources
+/*****
+Resources
+*****/
 describe('uccx.resource.list()', function () {
   it('should get list of resources (agents)', function (done) {
     uccx.resource.list()
@@ -70,7 +73,9 @@ describe('uccx.resource.modify(id, data)', function () {
   })
 })
 
-// Skills
+/*****
+Skills
+*****/
 describe('uccx.skill.create(name)', function () {
   it('should create skill', function (done) {
     uccx.skill.create({skillName: 'test1234test'})
@@ -114,7 +119,10 @@ describe('uccx.skill.get(id)', function () {
   })
 })
 
-// Contact Service Queue
+
+/*********************
+Contact Service Queues
+*********************/
 describe('uccx.csq.create(body)', function () {
   it('should create csq', function (done) {
     uccx.csq.create({
@@ -184,7 +192,10 @@ describe('uccx.csq.get(id)', function () {
   })
 })
 
-// Channel Providers
+/****
+Channel Providers
+****/
+
 // NOTE: only 1 channel provider can be configured, so this will fail if you
 // have already configured an email server
 // describe('uccx.channelProvider.create()', function () {
@@ -234,7 +245,8 @@ describe('uccx.channelProvider.get(id)', function () {
     // there can be only 1
     uccx.channelProvider.get(1)
     .then(response => {
-      console.log('found', JSON.stringify(response, null, 2))
+      console.log('found Channel Provider', response.id, 'using', response.receive.fqdn)
+      // console.log('found', JSON.stringify(response, null, 2))
       done()
     })
     .catch(e => {
@@ -243,16 +255,190 @@ describe('uccx.channelProvider.get(id)', function () {
   })
 })
 
-/**
+/****
+Teams
+****/
+describe('uccx.team.list()', function () {
+  it('should list Teams', function (done) {
+    uccx.team.list()
+    .then(response => {
+      console.log('found', response.length, 'Teams')
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+describe('uccx.team.get(id)', function () {
+  it('should get Team by ID', function (done) {
+    uccx.team.get(1)
+    .then(response => {
+      console.log('found Team', response.teamId, response.name)
+      // console.log('found Team', JSON.stringify(response, null, 2))
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+// describe('uccx.team.create()', function () {
+//   it('should create Team', function (done) {
+//     uccx.team.create({
+//       teamname: 'test1234test',
+//       resources: {
+//         resource: [
+//           {
+//             '@name': 'Josh Peterson',
+//             refURL': 'https://uccx1.dcloud.cisco.com/adminapi/resource/jopeters'
+//           }
+//         ]
+//       },
+//       csqs': {
+//         csq': [
+//           {
+//             '@name': 'Main_CSQ',
+//             refURL': 'https://uccx1.dcloud.cisco.com/adminapi/csq/2'
+//           },
+//           {
+//             '@name': 'Chat',
+//             refURL': 'https://uccx1.dcloud.cisco.com/adminapi/csq/3'
+//           },
+//           {
+//             '@name': 'Email_CSQ',
+//             refURL': 'https://uccx1.dcloud.cisco.com/adminapi/csq/9'
+//           }
+//         ]
+//       }
+//     })
+//     .then(response => {
+//       console.log('created Team', response)
+//       cache.teamId = response.split('/').pop()
+//       done()
+//     })
+//     .catch(e => {
+//       done(e)
+//     })
+//   })
+// })
+
+
+/***********
+Chat Widgets
+***********/
+describe('uccx.chatWidget.list()', function () {
+  it('should list Chat Widgets', function (done) {
+    uccx.chatWidget.list()
+    .then(response => {
+      console.log('found', response.length, 'Chat Widgets')
+      // console.log('found Chat Widgets', JSON.stringify(response, null, 2))
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+describe('uccx.chatWidget.create(body)', function () {
+  it('should create Chat Widget', function (done) {
+    uccx.chatWidget.create({
+      "name": "test1234test",
+      "description": "mocha test",
+      "formField": [
+        "Name",
+        "Email",
+        "PhoneNumber"
+      ],
+      // "contextServiceFieldsets": "",
+      "welcomeMessage": "Thank you for contacting us. A customer care representative would assist you soon.",
+      "agentJoinTimeoutMsg": "All our customer care representatives are busy. You may wait or try again later.",
+      "chatErrorMsg": "Chat service is currently unavailable. Try later.",
+      "problemStatementCSQPair": [
+        {
+          "problemStatement": "Issue",
+          "csq": {
+            // "@name": "Chat",
+            // "refURL": "https://uccx1.dcloud.cisco.com/adminapi/csq/3"
+            "@name": cache.chatCsqName,
+            "refURL": cache.chatCsqRefUrl
+          }
+        }
+      ],
+      "type": "bubble",
+      "bubbleStyle": {
+        "titleText": "Customer Care",
+        "titleTextColor": "#0AB7D7",
+        "buttonText": "Start Chat",
+        "buttonTextColor": "#FFFFFF",
+        "buttonBackgroundColor": "#0AB7D7",
+        "problemStmtCaption": "Choose a problem statement",
+        "agentMessageTextColor": "#FFFFFF",
+        "agentMessageBackgroundColor": "#0AC391",
+        "fontType": "Helvetica"
+      },
+      "bubbleMessages": {
+        "textForTypingMsg": "Type your message and press Enter",
+        "agentJoinedMsg": " ${agent_alias} has joined",
+        "agentLeftMsg": " ${agent_alias} has left the chat",
+        "afterChatSessionTranscriptPopupMsg": {
+          "transcriptPopupMsg": "Chat has ended. Do you want to download the chat transcript?",
+          "transcriptPopupNegativeMsg": "No",
+          "transcriptPopupPositiveMsg": "Yes"
+        },
+        "closeChatConfirmationPopupMsg": {
+          "closeChatPopupMsg": "Do you want to close the chat?",
+          "closeChatPopupNegativeMsg": "No",
+          "closeChatPopupPositiveMsg": "Yes"
+        },
+        "connectivityErrorMsg": "Chat disconnected due to inactivity timeout or connection failure."
+      },
+      "postChatRating": {
+        "ratingEnabled": true,
+        "ratingLabel": "Rate your chat experience",
+        "ratingButtonText": "Submit"
+      }
+    })
+    .then(response => {
+      console.log('created Chat Widget', response)
+      cache.chatWidgetRefUrl = response
+      cache.chatWidgetId = response.split('/').pop()
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+describe('uccx.chatWidget.get(id)', function () {
+  it('should get Chat Widget by ID', function (done) {
+    uccx.chatWidget.get(cache.chatWidgetId)
+    .then(response => {
+      console.log('found Chat Widget', response.id, response.name)
+      // console.log('found Chat Widget', JSON.stringify(response, null, 2))
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+
+/*******
 Clean Up
-**/
+*******/
 
 // delete CSQ
 describe('uccx.csq.delete(id)', function () {
   it('should delete csq', function (done) {
     uccx.csq.delete(cache.csqId)
     .then(response => {
-      console.log('deleted CSQ with ID', cache.csqId)
+      console.log('deleted CSQ', cache.csqId)
       done()
     })
     .catch(e => {
@@ -266,7 +452,7 @@ describe('uccx.skill.delete(id)', function () {
   it('should delete skill', function (done) {
     uccx.skill.delete(cache.skillId)
     .then(response => {
-      console.log('deleted skill', cache.skillId)
+      console.log('deleted Skill', cache.skillId)
       done()
     })
     .catch(e => {
@@ -281,7 +467,7 @@ describe('uccx.skill.delete(id)', function () {
 //   it('should delete Channel Provider', function (done) {
 //     uccx.channelProvider.delete(cache.channelProviderId)
 //     .then(response => {
-//       console.log('deleted', response)
+//       console.log('deleted Channel Provider', response)
 //       done()
 //     })
 //     .catch(e => {
@@ -289,3 +475,32 @@ describe('uccx.skill.delete(id)', function () {
 //     })
 //   })
 // })
+
+// delete Team
+// you probably don't want to do this, so I commented it out
+// describe('uccx.team.delete(id)', function () {
+//   it('should delete Team', function (done) {
+//     uccx.team.delete(cache.teamId)
+//     .then(response => {
+//       console.log('deleted Team', cache.teamId)
+//       done()
+//     })
+//     .catch(e => {
+//       done(e)
+//     })
+//   })
+// })
+
+// delete Chat Widget
+describe('uccx.chatWidget.delete(id)', function () {
+  it('should delete Chat Widget', function (done) {
+    uccx.chatWidget.delete(cache.chatWidgetId)
+    .then(response => {
+      console.log('deleted Chat Widget', cache.chatWidgetId)
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})

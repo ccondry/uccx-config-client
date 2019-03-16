@@ -18,6 +18,10 @@ class Uccx {
     this.csq = new Crud(this, 'csq')
     // Channel Provider (email server)
     this.channelProvider = new Crud(this, 'channelProvider')
+    // Teams
+    this.team = new Crud(this, 'team')
+    // Chat Widgets
+    this.chatWidget = new Crud(this, 'chatWidget')
   }
 
   // REST request options
