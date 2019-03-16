@@ -28,9 +28,9 @@ describe('uccx.resource.list()', function () {
   })
 })
 
-describe('uccx.resource.list({csqId, withCsqs, lastReSkillDetails})', function () {
-  it('should get list of resources (agents) by csqId = 1, with CSQ map, and with last reskill info', function (done) {
-    uccx.resource.list({csqId: 1, withCsqs: true, lastReSkillDetails: true})
+describe('uccx.resource.list({csqid, withCsqs, lastReSkillDetails})', function () {
+  it('should get list of resources (agents) by csqid = 1, with CSQ map, and with last reskill info', function (done) {
+    uccx.resource.list({csqid: 1, withCsqs: true, lastReSkillDetails: true})
     .then(response => {
       console.log('found', response.length, 'resources')
       done()
@@ -70,15 +70,16 @@ describe('uccx.resource.modify(id, data)', function () {
   })
 })
 
-
 // Skills
 describe('uccx.skill.create(name)', function () {
   it('should create skill', function (done) {
-    uccx.skill.create('test1234test')
+    uccx.skill.create({skillName: 'test1234test'})
     .then(refURL => {
       console.log('created skill:', refURL)
       // extract skill ID
       cache.skillId = refURL.split('/').pop()
+      cache.skillRefUrl = refURL
+      cache.skillName = 'test1234test'
       done()
     })
     .catch(e => {
@@ -113,11 +114,41 @@ describe('uccx.skill.get(id)', function () {
   })
 })
 
-describe('uccx.skill.delete(id)', function () {
-  it('should delete skill', function (done) {
-    uccx.skill.delete(cache.skillId)
-    .then(response => {
-      console.log('deleted', response)
+// Contact Service Queue
+describe('uccx.csq.create(body)', function () {
+  it('should create csq', function (done) {
+    uccx.csq.create({
+      name: 'test1234test',
+      queueType: 'VOICE',
+      routingType: 'VOICE',
+      queueAlgorithm: 'FIFO',
+      autoWork: true,
+      wrapupTime: 1,
+      resourcePoolType: 'SKILL_GROUP',
+      serviceLevel: 5,
+      serviceLevelPercentage: 70,
+      poolSpecificInfo: {
+        skillGroup: {
+          skillCompetency: [{
+            competencelevel: 5,
+            skillNameUriPair:{
+              '@name': cache.skillName,
+              refURL: cache.skillRefUrl
+            },
+            weight: 1,
+          }],
+          selectionCriteria: 'Longest Available'
+        }
+      },
+      prompt: {
+        '@name': 'mainMenu.wav',
+        refURL: 'https://uccx1.dcloud.cisco.com/adminapi/prompt/mainMenu.wav'
+      }
+    })
+    .then(refURL => {
+      console.log('created csq:', refURL)
+      // extract csq ID
+      cache.csqId = refURL.split('/').pop()
       done()
     })
     .catch(e => {
@@ -125,29 +156,12 @@ describe('uccx.skill.delete(id)', function () {
     })
   })
 })
-
-
-// Contact Service Queues
-// describe('uccx.csq.create(name)', function () {
-//   it('should create skill', function (done) {
-//     uccx.skill.create('test1234test')
-//     .then(refURL => {
-//       console.log('created skill:', refURL)
-//       // extract skill ID
-//       cache.skillId = refURL.split('/').pop()
-//       done()
-//     })
-//     .catch(e => {
-//       done(e)
-//     })
-//   })
-// })
 
 describe('uccx.csq.list()', function () {
   it('should list csqs', function (done) {
     uccx.csq.list()
     .then(response => {
-      console.log('found', response, 'csqs')
+      console.log('found', response.length, 'csqs')
       done()
     })
     .catch(e => {
@@ -156,31 +170,19 @@ describe('uccx.csq.list()', function () {
   })
 })
 
-// describe('uccx.csq.get(id)', function () {
-//   it('should get csq', function (done) {
-//     uccx.csq.get(cache.csqId)
-//     .then(response => {
-//       console.log('found', response.csqName)
-//       done()
-//     })
-//     .catch(e => {
-//       done(e)
-//     })
-//   })
-// })
-//
-// describe('uccx.csq.delete(id)', function () {
-//   it('should delete csq', function (done) {
-//     uccx.csq.delete(cache.csqId)
-//     .then(response => {
-//       console.log('deleted', response)
-//       done()
-//     })
-//     .catch(e => {
-//       done(e)
-//     })
-//   })
-// })
+describe('uccx.csq.get(id)', function () {
+  it('should get csq', function (done) {
+    uccx.csq.get(cache.csqId)
+    .then(response => {
+      console.log('found CSQ', response.name)
+      // console.log(JSON.stringify(response, null, 2))
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
 
 // Channel Providers
 describe('uccx.channelProvider.list()', function () {
@@ -208,7 +210,40 @@ describe('uccx.channelProvider.get(id)', function () {
     })
   })
 })
-//
+
+/**
+Clean Up
+**/
+
+// delete CSQ
+describe('uccx.csq.delete(id)', function () {
+  it('should delete csq', function (done) {
+    uccx.csq.delete(cache.csqId)
+    .then(response => {
+      console.log('deleted CSQ with ID', cache.csqId)
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+// delete Skill
+describe('uccx.skill.delete(id)', function () {
+  it('should delete skill', function (done) {
+    uccx.skill.delete(cache.skillId)
+    .then(response => {
+      console.log('deleted skill', cache.skillId)
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+// delete Channel Provider
 // describe('uccx.channelProvider.delete(id)', function () {
 //   it('should delete Channel Provider', function (done) {
 //     uccx.channelProvider.delete(cache.channelProviderId)
