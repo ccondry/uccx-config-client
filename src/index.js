@@ -22,6 +22,8 @@ class Uccx {
     this.team = new Crud(this, 'team')
     // Chat Widgets
     this.chatWidget = new Crud(this, 'chatWidget')
+    // Supervisor Resource Capabilities
+    this.capabilities = new Crud(this, 'resource', 'capabilities')
   }
 
   // REST request options

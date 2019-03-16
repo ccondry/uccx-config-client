@@ -7,7 +7,7 @@ const uccx = new client({
 })
 
 // config values for tests
-const resourceId = 'sjeffers'
+const resourceId = 'rbarrows0020'
 // cache for operations to carry data through the tests
 const cache = {
   // channelProviderId: 1
@@ -64,7 +64,7 @@ describe('uccx.resource.modify(id, data)', function () {
     uccx.resource.modify(resourceId, cache.resource)
     .then(response => {
       // response will be undefined
-      console.log('modified', cache.resource.alias)
+      console.log('modified', cache.self)
       done()
     })
     .catch(e => {
@@ -273,7 +273,7 @@ describe('uccx.team.list()', function () {
 
 describe('uccx.team.get(id)', function () {
   it('should get Team by ID', function (done) {
-    uccx.team.get(1)
+    uccx.team.get(15)
     .then(response => {
       console.log('found Team', response.teamId, response.name)
       // console.log('found Team', JSON.stringify(response, null, 2))
@@ -297,8 +297,8 @@ describe('uccx.team.get(id)', function () {
 //           }
 //         ]
 //       },
-//       csqs': {
-//         csq': [
+//       csqs: {
+//         csq: [
 //           {
 //             '@name': 'Main_CSQ',
 //             refURL': 'https://uccx1.dcloud.cisco.com/adminapi/csq/2'
@@ -420,6 +420,24 @@ describe('uccx.chatWidget.get(id)', function () {
     .then(response => {
       console.log('found Chat Widget', response.id, response.name)
       // console.log('found Chat Widget', JSON.stringify(response, null, 2))
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+
+/***********
+Capabilities
+***********/
+describe('uccx.capabilities.get(id)', function () {
+  it('should get advanced supervisor capabilities for resource by ID', function (done) {
+    uccx.capabilities.get('rbarrows')
+    .then(response => {
+      // console.log('found', response.length, 'Chat Widgets')
+      console.log('found capabilities', JSON.stringify(response, null, 2))
       done()
     })
     .catch(e => {
