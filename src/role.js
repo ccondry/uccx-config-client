@@ -63,7 +63,7 @@ module.exports = class Role {
           wizard: true
         },
         headers: {
-          'Referer': 'https://uccx1.dcloud.cisco.com/appadmin/main'
+          'Referer': this.baseUrl + '/appadmin/main'
         }
       })
 
