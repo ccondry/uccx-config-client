@@ -46,8 +46,8 @@ module.exports = class Role {
         },
         form: {
           appNav: 'appadmin',
-          j_username: 'administrator',
-          j_password: 'C1sco12345'
+          j_username: this.parent.username,
+          j_password: this.parent.password
         }
       })
 
