@@ -7,7 +7,7 @@ module.exports = class Role {
     this.baseUrl = parent.baseUrl.split('/')
     this.baseUrl.pop()
     this.baseUrl = this.baseUrl.join('/')
-    console.log('Role baseUrl = ', this.baseUrl)
+    // console.log('Role baseUrl = ', this.baseUrl)
   }
 
   // enable agent to be supervisor
