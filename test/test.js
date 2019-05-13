@@ -1,10 +1,7 @@
 const client = require('../src')
 // const resource = require('./resource')
-const uccx = new client({
-  url: 'https://uccx1.dcloud.cisco.com/adminapi',
-  username: 'administrator',
-  password: 'C1sco12345'
-})
+const credentials = require('./credentials')
+const uccx = new client(credentials)
 
 // config values for tests
 const resourceId = 'rbarrows0020'
@@ -449,46 +446,6 @@ describe('uccx.role.modify({username, extension, roles})', function () {
   })
 })
 
-/***********
-Capabilities
-***********/
-describe('uccx.capabilities.get(id)', function () {
-  it('should get advanced supervisor capabilities for resource by ID', function (done) {
-    uccx.capabilities.get('rbarrows0020')
-    .then(response => {
-      console.log('found capabilities for', 'rbarrows0020')
-      // console.log('found capabilities', JSON.stringify(response, null, 2))
-      done()
-    })
-    .catch(e => {
-      done(e)
-    })
-  })
-})
-
-describe('uccx.capabilities.modify(id, body)', function () {
-  it('should set advanced supervisor capabilities for resource by ID', function (done) {
-    uccx.capabilities.modify('rbarrows0021', {
-      resource: {
-        // '@name': 'Rick 0020 Barrows',
-        refURL: 'https://uccx1.dcloud.cisco.com/adminapi/resource/rbarrows0021'
-      },
-      capabilityList: {
-        capability: [
-          // 'CALENDAR_MGMT'
-        ]
-      }
-    })
-    .then(response => {
-      // console.log('found', response.length, 'Chat Widgets')
-      console.log('successfully modified capabilities for', 'rbarrows0020')
-      done()
-    })
-    .catch(e => {
-      done(e)
-    })
-  })
-})
 
 /*******
 Clean Up
