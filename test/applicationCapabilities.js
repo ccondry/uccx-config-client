@@ -9,7 +9,7 @@ Calendar
 ***********/
 
 describe('uccx.applicationCapabilities.modify(id, body)', function () {
-  it('should set set calendars manged by supervisor', function (done) {
+  it('should set Applications managed by supervisor', function (done) {
     uccx.applicationCapabilities.modify('rbarrows' + userId, {
       "resource": {
         // "@name": "Rick " + userId + " Barrows",
@@ -36,7 +36,7 @@ describe('uccx.applicationCapabilities.modify(id, body)', function () {
 })
 
 describe('uccx.applicationCapabilities.get()', function () {
-  it('should get Calendars managed by specified supervisor', function (done) {
+  it('should get Applications managed by specified supervisor', function (done) {
     uccx.applicationCapabilities.get('rbarrows' + userId)
     .then(response => {
       console.log(JSON.stringify(response, null, 2))
