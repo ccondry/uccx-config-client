@@ -40,6 +40,9 @@ class Uccx {
 
     // Modify which calendars a supervisor is managing with advanced capabilities
     this.calendarCapabilities = new Crud(this, 'resource', 'capabilities', 'calendars')
+
+    // Applications
+    this.application = new Crud(this, 'application')
   }
 
   // REST request options
