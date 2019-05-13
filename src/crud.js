@@ -1,10 +1,11 @@
 const request = require('request-promise-native')
 
 module.exports = class Crud {
-  constructor (parent, type, suffix) {
+  constructor (parent, type, suffix, suffix2) {
     this.parent = parent
     this.type = type
     this.suffix = suffix
+    this.suffix2 = suffix2
   }
 
   /**
@@ -43,6 +44,10 @@ module.exports = class Crud {
       // append suffix
       options.url += '/' + this.suffix
     }
+    if (this.suffix2) {
+      // append suffix2
+      options.url += '/' + this.suffix2
+    }
     return request(options)
   }
 
@@ -77,6 +82,10 @@ module.exports = class Crud {
     if (this.suffix) {
       // append suffix
       options.url += '/' + this.suffix
+    }
+    if (this.suffix2) {
+      // append suffix2
+      options.url += '/' + this.suffix2
     }
     options.method = 'PUT'
     // sending JSON data
