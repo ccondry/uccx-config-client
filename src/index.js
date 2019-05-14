@@ -44,8 +44,17 @@ class Uccx {
     // Modify which applications a supervisor is managing with advanced capabilities
     this.applicationCapabilities = new Crud(this, 'resource', 'capabilities', 'applications')
 
+    // Modify which outbound campaigns a supervisor is managing with advanced capabilities
+    this.campaignCapabilities = new Crud(this, 'resource', 'capabilities', 'campaigns')
+
     // Applications
     this.application = new Crud(this, 'application')
+
+    // Outbound Campaigns
+    this.campaign = new Crud(this, 'campaign')
+
+    // General Outbound Configuration
+    this.outbound = new Crud(this, 'generalobconfig')
   }
 
   // REST request options
