@@ -55,6 +55,9 @@ class Uccx {
 
     // General Outbound Configuration
     this.outbound = new Crud(this, 'generalobconfig')
+
+    // Triggers
+    this.trigger = new Crud(this, 'trigger')
   }
 
   // REST request options
