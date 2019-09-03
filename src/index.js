@@ -4,6 +4,7 @@
 // const ChannelProvider = require('./channel-provider')
 const Crud = require('./crud')
 const Role = require('./role')
+const AppAdmin = require('./app-admin')
 
 class Uccx {
   constructor({url, username, password}) {
@@ -58,6 +59,9 @@ class Uccx {
 
     // Triggers
     this.trigger = new Crud(this, 'trigger')
+
+    // App Admin (browser web interface)
+    this.appAdmin = new AppAdmin(this)
   }
 
   // REST request options
