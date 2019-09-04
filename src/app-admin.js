@@ -135,9 +135,9 @@ module.exports = class AppAdmin {
   createCsq (body) {
     switch (body.queueType) {
       case 'EMAIL':
-      case 'CHAT': return createChatOrEmailCsq(body)
+      case 'CHAT': return this.createChatOrEmailCsq(body)
       case 'VOICE':
-      default: return createVoiceCsq(body)
+      default: return this.createVoiceCsq(body)
     }
   }
 
