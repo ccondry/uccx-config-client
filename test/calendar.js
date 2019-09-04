@@ -2,7 +2,7 @@ const client = require('../src')
 const credentials = require('./credentials')
 const uccx = new client(credentials)
 
-const userId = '0003'
+const userId = '0004'
 
 let calendarId
 /***********
@@ -13,7 +13,7 @@ describe('uccx.calendar.list()', function () {
     uccx.calendar.list()
     .then(response => {
       console.log('found', response.length, 'Calendars')
-      console.log(response)
+      // console.log(response)
       done()
     })
     .catch(e => {
@@ -45,7 +45,20 @@ describe('uccx.calendar.get()', function () {
   it('should get 1 Calendar', function (done) {
     uccx.calendar.get(calendarId)
     .then(response => {
-      console.log(response)
+      console.log('calender found:', response.name)
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
+  })
+})
+
+describe('uccx.calendar.delete()', function () {
+  it('should delete 1 Calendar', function (done) {
+    uccx.calendar.delete(calendarId)
+    .then(response => {
+      console.log('deleted calendar', calendarId)
       done()
     })
     .catch(e => {
