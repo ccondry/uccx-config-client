@@ -6,13 +6,18 @@ const userId = '0325'
 
 let applicationId
 
+const cache = {
+  skillName: 'Voice_0098',
+  skillRefUrl: 'https://uccx1.dcloud.cisco.com/adminapi/skill/261'
+}
+
 /*********************
 Contact Service Queues
 *********************/
 describe('uccx.csq.create(body)', function () {
   it('should create csq', function (done) {
     uccx.csq.create({
-      name: 'test1234test',
+      name: 'test12345test',
       queueType: 'VOICE',
       routingType: 'VOICE',
       queueAlgorithm: 'FIFO',
