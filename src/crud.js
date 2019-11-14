@@ -64,8 +64,10 @@ module.exports = class Crud {
     // make sure return data is an array
     if (Array.isArray(response[this.type])) {
       return response[this.type]
-    } else {
+    } else if (response[this.type]) {
       return [response]
+    } else {
+      return []
     }
   }
 
