@@ -9,7 +9,7 @@ let applicationId
 Applications
 ***********/
 describe('uccx.application.list()', function () {
-  it('should list Calendars', function (done) {
+  it('should list Applications', function (done) {
     uccx.application.list()
     .then(response => {
       console.log('found', response.length, 'Applications')
