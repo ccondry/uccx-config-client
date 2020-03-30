@@ -335,7 +335,8 @@ module.exports = class AppAdmin {
         }
       })
 
-      const response2 = await request({
+      // click save - CSQ should be created after this is done
+      await request({
         baseUrl: this.baseUrl,
         url: 'appadmin/csq/save.do',
         jar: cookieJar,
@@ -353,8 +354,12 @@ module.exports = class AppAdmin {
           'skills[0].minCompetence': skillLevel
         }
       })
-      // return the response of part 2
-      return response2
+      // find the new CSQ ID
+      const csqs = uccx.csq.list()
+      const csq = csqs.find(v => v.name === name)
+      // return CSQ Ref URL
+      const csqRefUrl = csq.self
+      return csqRefUrl
     } catch (e) {
       throw e
     }
