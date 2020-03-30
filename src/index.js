@@ -9,6 +9,8 @@ const Role = require('./role')
 // library for interacting with the administrator web interface REST API
 // used for operations that cannot be done with the normal REST API
 const AppAdmin = require('./app-admin')
+// outbound config handlers
+const Outbound = require('./outbound')
 
 class Uccx {
   constructor({url, username, password}) {
@@ -59,7 +61,7 @@ class Uccx {
     this.campaign = new Crud(this, 'campaign')
 
     // General Outbound Configuration
-    this.outbound = new Crud(this, 'generalobconfig')
+    this.outbound = new Outbound(this)
 
     // Triggers
     this.trigger = new Crud(this, 'trigger')
