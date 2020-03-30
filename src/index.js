@@ -2,8 +2,12 @@
 // const Skill = require('./skill')
 // const Csq = require('./csq')
 // const ChannelProvider = require('./channel-provider')
+// library for most CRUD operations, like creating resources, skills, teams...
 const Crud = require('./crud')
+// library for editing a resource's roles, like setting Supervisor to true/false
 const Role = require('./role')
+// library for interacting with the administrator web interface REST API
+// used for operations that cannot be done with the normal REST API
 const AppAdmin = require('./app-admin')
 
 class Uccx {
