@@ -142,12 +142,13 @@ module.exports = class AppAdmin {
   }
 
   // create Voice CSQ using web interface (to get past 250 CSQ limit)
-  async createVoiceCsq ({
-    name,
-    skillId,
-    skillName,
-    skillLevel
-  }) {
+  async createVoiceCsq (body) {
+    const name = body.name
+    const skill = body.poolSpecificInfo.skillGroup.skillCompetency[0]
+    const skillId = skill.skillNameUriPair.refURL.split('/').pop()
+    const skillName = skill.skillNameUriPair['@name']
+    const skillLevel = skill.competencelevel
+
     try {
       // get logged in admin cookie
       let cookieJar = await this.getAuthCookie()
@@ -255,15 +256,17 @@ module.exports = class AppAdmin {
 
 
   // create Chat or Email CSQ using web interface (to get past 250 CSQ limit)
-  async createChatOrEmailCsq ({
-    name,
-    type,
-    skillId,
-    skillName,
-    skillLevel,
-    accountUserId = '',
-    accountPassword = ''
-  }) {
+  async createChatOrEmailCsq (body) {
+    const name = body.name
+    const skill = body.poolSpecificInfo.skillGroup.skillCompetency[0]
+    const skillId = skill.skillNameUriPair.refURL.split('/').pop()
+    const skillName = skill.skillNameUriPair['@name']
+    const skillLevel = skill.competencelevel
+
+    const type = body.queueType
+    const accountUserId = body.accountUserId || ''
+    const accountPassword = body.accountPassword || ''
+    
     try {
       // get logged in admin cookie
       let cookieJar = await this.getAuthCookie()
