@@ -7,9 +7,9 @@ const uccx = new client({
   password: process.env.PASSWORD
 })
 
-const userId = '0325'
+const userId = '4341'
 
-let csqId = '34'
+let csqId = '487'
 
 let currentConfig
 
@@ -36,13 +36,14 @@ describe('uccx.outbound.modify()', function () {
     // get current config, and add a CSQ to it
     currentConfig.assignedCSQs.csq.push({
       "csqNameUriPair": {
-        "@name": "Voice_" + userId,
+        "@name": "Outbound_" + userId,
         "refURL": "https://uccx1.dcloud.cisco.com/adminapi/csq/" + csqId
       },
       "percentage": 100
     })
+    console.log(currentConfig)
     // modify the config
-    const response = uccx.outbound.modify('', currentConfig)
+    const response = uccx.outbound.modify(currentConfig)
     .then(response => {
       done()
     })
