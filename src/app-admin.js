@@ -233,6 +233,7 @@ module.exports = class AppAdmin {
       part2Form['sk_name_' + skillId] = skillName
       part2Form['sk_comp_' + skillId] = skillLevel
 
+      // create the CSQ
       const response2 = await request({
         baseUrl: this.baseUrl,
         url: 'appadmin/ICD',
@@ -247,19 +248,27 @@ module.exports = class AppAdmin {
         },
         form: part2Form
       })
-      // create the CSQ
-      await uccx.appAdmin.createCsq(csqModel)
-      // find the new CSQ ID
-      const csqs = uccx.csq.list()
-      const csq = csqs.find(v => v.name === name)
-      // return CSQ Ref URL
-      const csqRefUrl = csq.self
-      return csqRefUrl
+
+      // return the new CSQ REF URL
+      return this.getCsqRefUrl(name)
     } catch (e) {
       throw e
     }
   }
 
+  async getCsqRefUrl (name) {
+    try {
+      // find the new CSQ ID
+      const csqs = await this.parent.csq.list()
+      const csq = csqs.find(v => v.name === name)
+      // return CSQ Ref URL
+      const csqRefUrl = csq.self
+      return csqRefUrl
+    } catch (e) {
+      console.log('failed to find CSQ Ref URL:', e.message)
+      throw e
+    }
+  }
 
   // create Chat or Email CSQ using web interface (to get past 250 CSQ limit)
   async createChatOrEmailCsq (body) {
@@ -354,12 +363,9 @@ module.exports = class AppAdmin {
           'skills[0].minCompetence': skillLevel
         }
       })
-      // find the new CSQ ID
-      const csqs = uccx.csq.list()
-      const csq = csqs.find(v => v.name === name)
-      // return CSQ Ref URL
-      const csqRefUrl = csq.self
-      return csqRefUrl
+      
+      // return the new CSQ REF URL
+      return this.getCsqRefUrl(name)
     } catch (e) {
       throw e
     }
