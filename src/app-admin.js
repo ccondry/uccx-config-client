@@ -2,6 +2,88 @@
 
 const request = require('request-promise-native')
 
+class ChatWidget {
+  constructor (parent) {
+    this.parent = parent
+    this.baseUrl = parent.baseUrl + '/appadmin/chat/widget'
+  }
+
+  // list bubble chat widgets
+  async list () {
+    try {
+      // get logged in admin cookie
+      let cookieJar = await this.parent.getAuthCookie()
+
+      const response = await request({
+        baseUrl: this.baseUrl,
+        url: 'listchatwidgets.do',
+        method: 'GET',
+        jar: cookieJar,
+        followAllRedirects: true,
+        headers: {
+          'Referer': this.parent.baseUrl + '/appadmin/main'
+        }
+      })
+
+      // array we will return at the end
+      const items = []
+
+      // find the table where the output begins
+      const tableStart = response.indexOf('<table id=\"cuesTable.td\"')
+      // find first tr, which is actually table header content
+      let trStart = response.indexOf('<tr>', tableStart)
+      // prime the while loop with the first row of data
+      trStart = response.indexOf('<tr', trStart)
+      // loop over the table until the end. this table is the last in the html.
+      while (trStart > -1) {
+        const idStart = response.indexOf('id="', trStart) + 'id="'.length
+        // console.log(idStart, 'idStart')
+        const idEnd = response.indexOf('"', idStart)
+        // console.log(idEnd, 'idEnd')
+        const id = response.substring(idStart, idEnd)
+        // console.log(id)
+        const aStart = response.indexOf('<a', idEnd) + '<a'.length
+        // console.log('aStart', aStart)
+        const nameStart = response.indexOf('>', aStart) + '>'.length
+        // console.log('nameStart', nameStart)
+        const nameEnd = response.indexOf('</a>', nameStart)
+        // console.log('nameEnd', nameEnd)
+        const name = response.substring(nameStart, nameEnd)
+        // console.log(id, name)
+        items.push({ id, name })
+        // find next row of data
+        trStart = response.indexOf('<tr', nameEnd)
+      }
+      return items
+    } catch (e) {
+      throw e
+    }
+  }
+
+  // delete a bubble chat widget
+  async delete (id) {
+    // get logged in admin cookie
+    let cookieJar = await this.parent.getAuthCookie()
+
+    // delete the bubble chat widget
+    const response = await request({
+      baseUrl: this.baseUrl,
+      url: 'deletechatwidget.do',
+      method: 'GET',
+      jar: cookieJar,
+      followAllRedirects: false,
+      qs: {
+        deletedWid: id
+      },
+      headers: {
+        'Referer': this.baseUrl + '/listchatwidgets.do'
+        // 'Referer': this.parent.baseUrl + '/appadmin/main'
+      }
+    })
+    return response
+  }
+}
+
 module.exports = class AppAdmin {
   constructor (parent) {
     this.parent = parent
@@ -10,6 +92,8 @@ module.exports = class AppAdmin {
     this.baseUrl.pop()
     this.baseUrl = this.baseUrl.join('/')
     // console.log('Role baseUrl = ', this.baseUrl)
+    // chat widget code
+    this.chatWidget = new ChatWidget(this)
   }
 
   // get logged-in admin cookie. need this first before user other methods.
