@@ -247,8 +247,14 @@ module.exports = class AppAdmin {
         },
         form: part2Form
       })
-      // return the response of part 2
-      return response2
+      // create the CSQ
+      await uccx.appAdmin.createCsq(csqModel)
+      // find the new CSQ ID
+      const csqs = uccx.csq.list()
+      const csq = csqs.find(v => v.name === name)
+      // return CSQ Ref URL
+      const csqRefUrl = csq.self
+      return csqRefUrl
     } catch (e) {
       throw e
     }
