@@ -23,8 +23,10 @@
   },
   "homepage": "https://github.com/juxe/uccx-config-client#readme",
   "dependencies": {
-    "dotenv": "^7.0.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
+  },
+  "devDependencies": {
+    "dotenv": "^7.0.0"
   }
 }
