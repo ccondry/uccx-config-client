@@ -1,21 +1,28 @@
 const client = require('../src')
-const credentials = require('./credentials')
-const uccx = new client(credentials)
+// const credentials = require('./credentials')
+require('dotenv').config()
+const uccx = new client({
+  url: process.env.URL,
+  username: process.env.USERNAME,
+  password: process.env.PASSWORD
+})
 
 const userId = '0325'
 
 let csqId = '34'
 
 let currentConfig
+
+// let currentConfig
 /*****************************
 General Outbound Configuration
 *****************************/
-describe('uccx.outbound.list()', function () {
-  it('should list general outbound config', function (done) {
-    uccx.outbound.list()
+describe('uccx.outbound.get()', function () {
+  it('should get general outbound config', function (done) {
+    uccx.outbound.get()
     .then(response => {
-      currentConfig = response[0]
-      console.log(JSON.stringify(response, null, 2))
+      // console.log(JSON.stringify(response, null, 2))
+      currentConfig = response
       done()
     })
     .catch(e => {
