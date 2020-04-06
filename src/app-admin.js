@@ -489,22 +489,30 @@ module.exports = class AppAdmin {
       // <DIV id="statMsg">
       //   The CSQ name already exists. Please enter a unique CSQ name.
       // </DIV>
-      const statusDiv = '<DIV id="statMsg">'
-      const statusDivClose = '</DIV>'
-      const statusStart = response4.indexOf(statusDiv) + statusDiv.length
-      if (statusStart > 0) {
-        const statusEnd = response4.indexOf(statusDivClose)
-        if (statusEnd > statusStart) {
-          const status = response4.substring(statusStart, statusEnd).trim()
-          throw Error(`Failed to create ${type} CSQ ${name} using app admin: ${status}`)
-          // console.log('create', type, 'CSQ status:', status)
-          // if (status === 'The CSQ name already exists. Please enter a unique CSQ name.') {
-          // }
+      const errorTd = '<td class="cuesStatusTextError">'
+      const errorTdStart = response4.indexOf(errorTd)
+      // was there an error?
+      if (errorTdStart >= 0) {
+        console.log('found an error creating email or chat CSQ. Processing it...')
+        // has error
+        const statusDiv = '<DIV id="statMsg">'
+        const statusDivClose = '</DIV>'
+        const statusStart = response4.indexOf(statusDiv, errorTdStart)
+        if (statusStart >= 0) {
+          const statusEnd = response4.indexOf(statusDivClose, statusStart)
+          if (statusEnd >= 0) {
+            const status = response4.substring(statusStart + statusDiv.length, statusEnd).trim()
+            throw Error(`Failed to create ${type} CSQ ${name} using app admin: ${status}`)
+          }
+        } else {
+          // couldn't find the error message?
+          throw Error(`Failed to create ${type} CSQ ${name} using app admin: Unable to parse error.`)
         }
+      } else {
+        // no error
+        // return the new CSQ REF URL
+        return this.getCsqRefUrl(name)
       }
-      
-      // return the new CSQ REF URL
-      return this.getCsqRefUrl(name)
     } catch (e) {
       throw e
     }
