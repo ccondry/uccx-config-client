@@ -422,6 +422,18 @@ module.exports = class AppAdmin {
       })
       // console.log('click add new chat or email CSQ:', response2)
 
+      // id=&
+      // name=Email_4461&
+      // resSelectCriteria=Longest+Available&
+      // type=Email&
+      // accountUserId=support_4461%40dcloud.cisco.com&
+      // accountPassword=C1sco12345&
+      // folderName=Inbox&
+      // actionType=next&
+      // accountPasswordChanged=true&
+      // pollingInterval=180&
+      // snapshotAge=120
+
       // click next
       const response3 = await request({
         baseUrl: this.baseUrl,
@@ -451,6 +463,9 @@ module.exports = class AppAdmin {
       })
       // console.log('click next on add new chat or email CSQ:', response3)
 
+      // skills%5B0%5D.id=430&
+      // skills%5B0%5D.name=Email_4461&
+      // skills%5B0%5D.minCompetence=5
       // click save - CSQ should be created after this is done
       const response4 = await request({
         baseUrl: this.baseUrl,
