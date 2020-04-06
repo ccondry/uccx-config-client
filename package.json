@@ -8,7 +8,8 @@
     "start": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt node src/index",
     "test": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test --timeout 20000",
     "test:outbound": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/outbound --timeout 20000",
-    "test:app-admin": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/app-admin --timeout 20000"
+    "test:app-admin": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/app-admin --timeout 20000",
+    "test:csq": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/csq --timeout 20000"
   },
   "repository": {
     "type": "git",
