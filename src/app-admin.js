@@ -438,8 +438,8 @@ module.exports = class AppAdmin {
         form: {
           id: '',
           name,
-          resSelectCriteria: 'Longest+Available',
-          type,
+          resSelectCriteria: 'Longest Available',
+          type: type.toLowerCase() === 'EMAIL' ? 'Email' : 'Chat',
           accountUserId,
           accountPassword,
           folderName: 'Inbox',
