@@ -343,11 +343,21 @@ module.exports = class AppAdmin {
   async getCsqRefUrl (name) {
     try {
       // find the new CSQ ID
+      console.log(`finding CSQ REF URL for ${name}...`)
       const csqs = await this.parent.csq.list()
+      console.log(`found ${csqs.length} CSQs.`)
+      console.log(`searching ${csqs.length} CSQs for ${name}...`)
       const csq = csqs.find(v => v.name === name)
-      // return CSQ Ref URL
-      const csqRefUrl = csq.self
-      return csqRefUrl
+      if (csq) {
+        console.log(`found CSQ:`, csq)
+        // return CSQ Ref URL
+        const csqRefUrl = csq.self
+        console.log(`returning CSQ REF URL: ${csqRefUrl}`)
+        return csqRefUrl
+      } else {
+        console.log('getCsqRefUrl: CSQ', name, 'not found.')
+        throw Error(`CSQ ${name} not found.`)
+      }
     } catch (e) {
       console.log('failed to find CSQ Ref URL:', e.message)
       throw e
@@ -361,17 +371,27 @@ module.exports = class AppAdmin {
     const skillId = skill.skillNameUriPair.refURL.split('/').pop()
     const skillName = skill.skillNameUriPair['@name']
     const skillLevel = skill.competencelevel
-
+    
     const type = body.queueType
     const accountUserId = body.accountUserId || ''
     const accountPassword = body.accountPassword || ''
     
+    console.log('creating', type, 'CSQ using appadmin page...')
+    // console.log('name', name)
+    // console.log('skill', skill)
+    // console.log('skillId', skillId)
+    // console.log('skillName', skillName)
+    // console.log('skillLevel', skillLevel)
+    // console.log('type', type)
+    // console.log('accountUserId', accountUserId)
+    // console.log('accountPassword', accountPassword)
+
     try {
       // get logged in admin cookie
       let cookieJar = await this.getAuthCookie()
 
       // list Chat and Email CSQs - maybe not necessary?
-      await request({
+      const response1 = await request({
         baseUrl: this.baseUrl,
         url: 'appadmin/csq/list.do',
         method: 'GET',
@@ -384,9 +404,10 @@ module.exports = class AppAdmin {
           'Referer': this.baseUrl + '/appadmin/main'
         }
       })
+      // console.log('list chat and email CSQs:', response1)
 
       // click Add New CSQ button
-      await request({
+      const response2 = await request({
         baseUrl: this.baseUrl,
         url: 'appadmin/csq/addNew.do',
         method: 'GET',
@@ -399,9 +420,10 @@ module.exports = class AppAdmin {
           'Referer': this.baseUrl + '/appadmin/csq/list.do'
         }
       })
+      // console.log('click add new chat or email CSQ:', response2)
 
       // click next
-      const response1 = await request({
+      const response3 = await request({
         baseUrl: this.baseUrl,
         url: 'appadmin/csq/assign.do',
         jar: cookieJar,
@@ -427,9 +449,10 @@ module.exports = class AppAdmin {
           snapshotAge: 120
         }
       })
+      // console.log('click next on add new chat or email CSQ:', response3)
 
       // click save - CSQ should be created after this is done
-      await request({
+      const response4 = await request({
         baseUrl: this.baseUrl,
         url: 'appadmin/csq/save.do',
         jar: cookieJar,
@@ -447,6 +470,23 @@ module.exports = class AppAdmin {
           'skills[0].minCompetence': skillLevel
         }
       })
+      // search for response message like this
+      // <DIV id="statMsg">
+      //   The CSQ name already exists. Please enter a unique CSQ name.
+      // </DIV>
+      const statusDiv = '<DIV id="statMsg">'
+      const statusDivClose = '</DIV>'
+      const statusStart = response4.indexOf(statusDiv) + statusDiv.length
+      if (statusStart > 0) {
+        const statusEnd = response4.indexOf(statusDivClose)
+        if (statusEnd > statusStart) {
+          const status = response4.substring(statusStart, statusEnd).trim()
+          throw Error(`Failed to create ${type} CSQ ${name} using app admin: ${status}`)
+          // console.log('create', type, 'CSQ status:', status)
+          // if (status === 'The CSQ name already exists. Please enter a unique CSQ name.') {
+          // }
+        }
+      }
       
       // return the new CSQ REF URL
       return this.getCsqRefUrl(name)
