@@ -451,7 +451,7 @@ module.exports = class AppAdmin {
           id: '',
           name,
           resSelectCriteria: 'Longest Available',
-          type: type.toLowerCase() === 'EMAIL' ? 'Email' : 'Chat',
+          type: type.toLowerCase() === 'email' ? 'Email' : 'Chat',
           accountUserId,
           accountPassword,
           folderName: 'Inbox',
