@@ -6,6 +6,14 @@ const uccx = new client({
   password: process.env.PASSWORD
 })
 
+const userId = '0325'
+
+await uccx.role.modify({
+  username: 'rbarrows' + userId,
+  extension: '1082' + userId,
+  roles: 'Agent,Supervisor,Reporting'
+})
+
 // describe('uccx.appadmin.createVoiceCsq()', function () {
 //   it('should create csq', function (done) {
 //     uccx.appadmin.createCsq ({
@@ -81,36 +89,36 @@ const uccx = new client({
 //   })
 // })
 
-describe('uccx.appAdmin.createChatOrEmailCsq()', function () {
-  it('should create a chat widget using appAdmin web UI', function (done) {
-    uccx.appAdmin.createChatOrEmailCsq({
-      "name": "Chat_4461",
-      "queueType": "CHAT",
-      "queueAlgorithm": "FIFO",
-      "routingType": "INTERACTIVE",
-      "resourcePoolType": "SKILL_GROUP",
-      "poolSpecificInfo": {
-        "skillGroup": {
-          "skillCompetency": [
-            {
-              "competencelevel": 5,
-              "skillNameUriPair": {
-                "@name": "Chat_4461",
-                "refURL": "https://uccx1.dcloud.cisco.com/adminapi/skill/431"
-              },
-              "weight": 1
-            }
-          ],
-          "selectionCriteria": "Longest Available"
-        }
-      }
-    })
-    .then(response => {
-      // console.log(JSON.stringify(response, null, 2))
-      done()
-    })
-    .catch(e => {
-      done(e)
-    })
-  })
+// describe('uccx.appAdmin.createChatOrEmailCsq()', function () {
+//   it('should create a chat widget using appAdmin web UI', function (done) {
+//     uccx.appAdmin.createChatOrEmailCsq({
+//       "name": "Chat_4461",
+//       "queueType": "CHAT",
+//       "queueAlgorithm": "FIFO",
+//       "routingType": "INTERACTIVE",
+//       "resourcePoolType": "SKILL_GROUP",
+//       "poolSpecificInfo": {
+//         "skillGroup": {
+//           "skillCompetency": [
+//             {
+//               "competencelevel": 5,
+//               "skillNameUriPair": {
+//                 "@name": "Chat_4461",
+//                 "refURL": "https://uccx1.dcloud.cisco.com/adminapi/skill/431"
+//               },
+//               "weight": 1
+//             }
+//           ],
+//           "selectionCriteria": "Longest Available"
+//         }
+//       }
+//     })
+//     .then(response => {
+//       // console.log(JSON.stringify(response, null, 2))
+//       done()
+//     })
+//     .catch(e => {
+//       done(e)
+//     })
+//   })
 })

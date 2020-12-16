@@ -13,10 +13,21 @@ const AppAdmin = require('./app-admin')
 const Outbound = require('./outbound')
 
 class Uccx {
-  constructor({url, username, password}) {
+  constructor({
+    // UCCX url
+    url,
+    // UCCX admin username
+    username,
+    // UCCX admin password
+    password,
+    // whether to use CSRF token for modifying resource (user) roles
+    // should be true for UCCX version 12.5 and later, false for 12.0
+    useCsrf = true
+  }) {
     this.baseUrl = url
     this.username = username
     this.password = password
+    this.useCsrf = useCsrf
 
     // Resources (agents and supervisors)
     this.resource = new Crud(this, 'resource')
