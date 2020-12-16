@@ -1,6 +1,6 @@
 {
   "name": "uccx-config-client",
-  "version": "0.10.4",
+  "version": "2020.12.16",
   "description": "JavaScript client for UCCX System Configuration APIs",
   "main": "src/index.js",
   "scripts": {
@@ -9,7 +9,10 @@
     "test": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test --timeout 20000",
     "test:outbound": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/outbound --timeout 20000",
     "test:app-admin": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/app-admin --timeout 20000",
-    "test:csq": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/csq --timeout 20000"
+    "test:csq": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/csq --timeout 20000",
+    "test:resource": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/resource --timeout 20000",
+    "test:role": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/role --timeout 20000",
+    "test:team": "NODE_EXTRA_CA_CERTS=/Users/coty/dcloud-root-ca.crt mocha test/team --timeout 20000"
   },
   "repository": {
     "type": "git",
